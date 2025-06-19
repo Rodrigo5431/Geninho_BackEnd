@@ -2,6 +2,7 @@ package br.com.geninho.entities;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
@@ -103,6 +104,23 @@ public class User implements UserDetails {
 
 	public void setProfile(Role profile) {
 		this.profile = profile;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(id, other.id);
 	}
 
 	@Override
