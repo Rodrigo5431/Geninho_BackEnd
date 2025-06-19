@@ -1,6 +1,8 @@
 package br.com.geninho.service;
 
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,12 +20,12 @@ public class UsuarioDetailsImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User usuario = userRepository.findByEmail(username);
+        Optional<User> usuario = userRepository.findByEmail(username);
 
-        if (usuario == null) {
+        if (usuario.isEmpty()) {
         	throw new UsernameNotFoundException("Usuário não encontrado");
         }
 
-        return usuario;
+        return usuario.get();
     }
 }

@@ -1,6 +1,5 @@
 package br.com.geninho.config;
 
-
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +23,6 @@ import br.com.geninho.Security.Jwt;
 import br.com.geninho.Security.JwtAuthenticationFilter;
 import br.com.geninho.Security.JwtAuthorizationFilter;
 
-
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
@@ -42,12 +39,9 @@ public class SecurityConfig {
 		http.csrf(csrf -> csrf.disable()).cors((cors) -> cors.configurationSource(configurationSource()))
 				.authorizeHttpRequests(requests -> requests.requestMatchers("/public/").permitAll()
 
-						.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
+						.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**")
+						.permitAll().requestMatchers(HttpMethod.GET, "/products/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/products/**").permitAll()
-						.requestMatchers(HttpMethod.PUT, "/products/**").permitAll()
-						.requestMatchers(HttpMethod.POST, "/users").permitAll()
-						.requestMatchers(HttpMethod.PUT, "/users/**").permitAll()
-
 						.anyRequest().permitAll())
 
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

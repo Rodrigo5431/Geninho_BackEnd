@@ -35,6 +35,14 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	private ResponseEntity<Object> handleNotFoundException(CpfException ex) {
 		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
 	}
+	@ExceptionHandler(IncorrectCodeException.class)
+	private ResponseEntity<Object> IncorrectCodeException(IncorrectCodeException ex) {
+		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
+	}
+	@ExceptionHandler(TokenExpiredException.class)
+	private ResponseEntity<Object> TokenExpiredException(TokenExpiredException ex) {
+		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
+	}
 
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,

@@ -39,6 +39,7 @@ public class ProductService {
 		product.setPrice(productInsert.getPrice());
 		product.setDescription(productInsert.getDescription());
 		product.setStock(productInsert.getStock());
+		product.setStatus(true); 
 		productRepository.save(product);
 		
 		return new ProductDTO(product);
@@ -57,6 +58,7 @@ public class ProductService {
 		product.setPrice(productInsert.getPrice() != null? productInsert.getPrice() : productOpt.get().getPrice());
 		product.setDescription(productInsert.getDescription() != null? productInsert.getDescription() : productOpt.get().getDescription());
 		product.setStock(productInsert.getStock() != null? productInsert.getStock() : productOpt.get().getStock());
+		product.setStatus(productOpt.get().getStatus());
 		productRepository.save(product);
 		
 		return new ProductDTO(product);
@@ -70,5 +72,18 @@ public class ProductService {
 		}
 		productRepository.deleteById(id);
 		return "Produto deletado com sucesso";
+	}
+	public ProductDTO disableProduct(Long id) {
+		
+		Optional<Product>productOpt = productRepository.findById(id);
+		if (productOpt.isEmpty()) {
+			throw new NotFoundException("Produto não encontrado");
+		}
+		
+		Product product = productOpt.get();
+		product.setStatus(false);
+		productRepository.save(product);
+		
+		return new ProductDTO(product);
 	}
 }

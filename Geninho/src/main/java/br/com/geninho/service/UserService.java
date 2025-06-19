@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.geninho.dto.UserDTO;
@@ -21,6 +22,8 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 
 	public List<UserDTO> getAllUsers() {
 		return userRepository.findAll().stream().map(UserDTO::new).collect(Collectors.toList());
@@ -53,7 +56,7 @@ public class UserService {
 		user.setEmail(userInsert.getEmail());
 		user.setCpf(userInsert.getCpf());
 		user.setProfile(userInsert.getProfile());
-		user.setPassword(userInsert.getPassword());
+		user.setPassword(encoder.encode(userInsert.getPassword()));
 
 		userRepository.save(user);
 		UserDTO userDTO = new UserDTO(user);
@@ -81,7 +84,7 @@ public class UserService {
 		user.setName(userInsert.getName() != null ? userInsert.getName() : userOpt.get().getName());
 		user.setCpf(userInsert.getCpf() != null ? userInsert.getCpf() : userOpt.get().getCpf());
 		user.setEmail(userInsert.getEmail() != null ? userInsert.getEmail() : userOpt.get().getEmail());
-		user.setPassword(userInsert.getPassword() != null ? userInsert.getPassword() : userOpt.get().getPassword());
+		user.setPassword(userInsert.getPassword() != null ? encoder.encode(userInsert.getPassword()) : userOpt.get().getPassword());
 		user.setProfile(userInsert.getProfile() != null ? userInsert.getProfile() : userOpt.get().getProfile());
 		userRepository.save(user);
 
