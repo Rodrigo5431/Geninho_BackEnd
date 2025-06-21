@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.geninho.dto.UserDTO;
 import br.com.geninho.dto.UserInsertDTO;
@@ -39,6 +40,7 @@ public class UserService {
 		return new UserDTO(userOpt.get());
 	}
 
+	@Transactional
 	public UserDTO createUser(UserInsertDTO userInsert) {
 
 		if (!userInsert.getPassword().equals(userInsert.getConfirmPassword())) {
@@ -64,6 +66,7 @@ public class UserService {
 		return userDTO;
 	}
 
+	@Transactional
 	public UserDTO updateUser(Long id, UserInsertDTO userInsert) {
 		Optional<User> userOpt = userRepository.findById(id);
 		if (userOpt.isEmpty()) {
@@ -75,7 +78,7 @@ public class UserService {
 		if (userRepository.findByEmail(userInsert.getEmail()) != null) {
 			throw new EmailException("Este email ja existe");
 		}
-		if (userRepository.findByCpf(userInsert.getEmail()) != null) {
+		if (userRepository.findByCpf(userInsert.getCpf()) != null) {
 			throw new EmailException("Este cpf ja existe");
 		}
 
@@ -92,6 +95,7 @@ public class UserService {
 
 	}
 
+	@Transactional
 	public String deleteUser(Long id) {
 		Optional<User> userOpt = userRepository.findById(id);
 		if (userOpt.isEmpty()) {
