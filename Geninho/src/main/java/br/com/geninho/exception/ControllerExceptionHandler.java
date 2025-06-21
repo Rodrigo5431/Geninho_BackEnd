@@ -43,6 +43,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	private ResponseEntity<Object> TokenExpiredException(TokenExpiredException ex) {
 		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
 	}
+	@ExceptionHandler(CouponException.class)
+	private ResponseEntity<Object> CouponException(CouponException ex) {
+		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
+	}
 
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
